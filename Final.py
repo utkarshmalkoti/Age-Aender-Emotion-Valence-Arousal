@@ -18,40 +18,6 @@ def mtcnn_detect_face(img,detector):
     faces = detector.detect_faces(img)
     return faces
 
-def detect_face(img_add):
-    # img = cv2.imread(img_add)
-    gray_img = cv2.imread(img_add,cv2.IMREAD_GRAYSCALE)
-    # gray_img = cv2.resize(gray_img,(512,512))
-    profile_cascade = cv2.CascadeClassifier("Cascade/data/haarcascade_profileface.xml")
-    frontal_cascade = cv2.CascadeClassifier('Cascade/data/haarcascade_frontalface_alt2.xml')
-    frontal_cascade_default = cv2.CascadeClassifier('Cascade/data/haarcascade_frontalface_default.xml')
-    frontal_cascade_alt = cv2.CascadeClassifier('Cascade/data/haarcascade_frontalface_alt.xml')
-    frontal_cascade_cat = cv2.CascadeClassifier('Cascade/data/haarcascade_frontalcatface.xml')
-    frontal_cascade_cat_ext = cv2.CascadeClassifier('Cascade/data/haarcascade_frontalcatface_extended.xml')
-    frontal_cascade_tree = cv2.CascadeClassifier('Cascade/data/haarcascade_frontalface_alt_tree.xml')
-
-    face = frontal_cascade.detectMultiScale(gray_img,scaleFactor=1.5,minNeighbors=3)
-    if face==():
-        face = profile_cascade.detectMultiScale(gray_img,scaleFactor=1.5,minNeighbors=3)
-    if face==():
-        face = frontal_cascade_default.detectMultiScale(gray_img,scaleFactor=1.5,minNeighbors=3)
-    if face==():
-        face = frontal_cascade_alt.detectMultiScale(gray_img,scaleFactor=1.5,minNeighbors=3)
-    if face==():
-        face = frontal_cascade_cat.detectMultiScale(gray_img,scaleFactor=1.5,minNeighbors=3)
-    if face==():
-        face = frontal_cascade_tree.detectMultiScale(gray_img,scaleFactor=1.5,minNeighbors=3)
-    if face==():
-        face = frontal_cascade_cat_ext.detectMultiScale(gray_img,scaleFactor=1.5,minNeighbors=3)
-
-    face_img = {"BoundingBoxes":[],"faces_arrays":[],"No_of_faces":0}
-    for (x,y,w,h) in face:
-        cv2.rectangle(gray_img,(x,y),(x+w,y+h),(255,0,0),2)
-        face_img['No_of_faces']+=1
-        face_img['BoundingBoxes'].append([x,y,w,h])
-        face_img['faces_arrays'].append(gray_img[x:x+w+22,y:y+h+22])
-    return face_img
-
 def load_dataset_age_gen():
     with open("resized_dataset_age_gen.pickle",'rb') as f:
         img = pickle.load(f)
@@ -82,11 +48,11 @@ def neural_network():
     model_ag.load_weights('models/age_gender_model/age_gender_weights.h5')
     
     # EMOTION MODEL LOAD
-    json_file_emo = open('Datasets/kaggle_emo/kaggle_model_3_2conv.json','r')
+    json_file_emo = open('models/emotions/kaggle_model_3_2conv.json','r')
     json_model_emo = json_file_emo.read()
     json_file_emo.close()
     model_emotion = model_from_json(json_model_emo)
-    model_emotion.load_weights('Datasets/kaggle_emo/kaggle_emotion_weights_3_2conv.h5')
+    model_emotion.load_weights('models/emotions/kaggle_emotion_weights_3_2conv.h5')
 
     # VALENCE AND AROUSAL MODEL LOAD
     json_file_va = open('models/va model/va_model2.json','r')
