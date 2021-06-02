@@ -48,11 +48,11 @@ def neural_network():
     model_ag.load_weights('models/age_gender_model/age_gender_weights.h5')
     
     # EMOTION MODEL LOAD
-    json_file_emo = open('models/emotions/kaggle_model_3_2conv.json','r')
+    json_file_emo = open('models/emotion_model/kaggle_model_3_2conv.json','r')
     json_model_emo = json_file_emo.read()
     json_file_emo.close()
     model_emotion = model_from_json(json_model_emo)
-    model_emotion.load_weights('models/emotions/kaggle_emotion_weights_3_2conv.h5')
+    model_emotion.load_weights('models/emotion_model/kaggle_emotion_weights_3_2conv.h5')
 
     # VALENCE AND AROUSAL MODEL LOAD
     json_file_va = open('models/va model/va_model2.json','r')
